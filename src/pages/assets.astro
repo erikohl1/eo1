@@ -1,0 +1,115 @@
+---
+import { getEntry } from 'astro:content';
+
+// import { Image } from 'astro:assets'
+import Image from '~/components/Image.astro'
+import localImg from "~/assets/images/placeholder.jpeg"
+import UnpicImage from '~/components/UnpicImage.astro';
+
+const post1 = await getEntry('post', 'post-1');
+const post2 = await getEntry('post', 'post-2');
+const post3 = await getEntry('post', 'post-3');
+
+const assetsImg = "~/assets/images/placeholder.jpeg";
+const publicImg = "/public.jpeg"
+const remoteImg = "https://images.unsplash.com/reserve/LJIZlzHgQ7WPSh5KVTCB_Typewriter.jpg"
+const remoteNotCdnImg = "https://cdn.pixabay.com/photo/2017/08/30/13/23/mesh-2697072_1280.png"
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<h1>Astro Assets</h1>
+
+		<h2>Assets Import <small>(import "{assetsImg}")</small></h2>
+		<Image
+			src={"~/assets/images/hero.png"}
+			widths={[400, 768, 1024, 2040]}
+			sizes="(max-width: 767px) 400px, (max-width: 1023px) 768px, (max-width: 2039px) 1024px, 2040px"
+			width={1024}
+			height={576}
+			alt={"Astrowind Demo"}
+			loading="eager"
+		/>
+
+		<h2>Assets Import <small>(import "{assetsImg}")</small></h2>
+		<Image
+			src={localImg}
+			width={300}
+			alt={"Assets Import Image"}
+		/>
+
+		<h2>Assets String <small>("{assetsImg}")</small></h2>
+		<Image
+			src={assetsImg}
+			width={300}
+			height={300}
+			alt={"Assets String Image"}
+		/>
+
+		<h2>Remote Image CDN <small>("{remoteImg}")</small></h2>
+		<Image
+			src={remoteImg}
+			width={300}
+			height={300}
+			alt={"Remote Image"}
+		/>
+
+		<h2>Remote Image CDN original <small>("{remoteImg}")</small></h2>
+		<UnpicImage
+			src={remoteImg}
+			width={300}
+			height={300}
+			alt={"Remote Image"}
+		/>
+
+		<h2>Remote Image not CDN <small>("{remoteNotCdnImg}")</small></h2>
+		<Image
+			src={remoteNotCdnImg}
+			width={300}
+			height={300}
+			alt={"Remote Image not CDN"}
+		/>
+
+		<h2>Public Image <small>("{publicImg}")</small></h2>
+		<Image
+			src={publicImg}
+			width={300}
+			height={300}
+			alt={"Public Image"}
+		/>
+
+		<h2>Post 1 (Assets String)</h2>
+		<Image
+			src={post1.data.image as any}
+			width={300}
+			height={300}
+			alt={"Post 1 (Assets String)"}
+		/>
+		<pre>{JSON.stringify({ title: "Lorem ipsum 1", image: post1.data.image }, null, 2)}</pre>
+
+		<h2>Post 2 (Remote Image)</h2>
+		<Image
+			src={post2.data.image as any}
+			width={300}
+			height={300}
+			alt={"Post 2 (Remote Image)"}
+		/>
+		<pre>{JSON.stringify({ title: "Lorem ipsum 2", image: post2.data.image}, null, 2)}</pre>
+
+		<h2>Post 3 (Public Image)</h2>
+		<Image
+			src={post3.data.image as any}
+			width={300}
+			height={300}
+			alt={"Post 3 (Public Image)"}
+		/>
+		<pre>{JSON.stringify({ title: "Lorem ipsum 3", image: post3.data.image }, null, 2)}</pre>
+	</body>
+</html>
